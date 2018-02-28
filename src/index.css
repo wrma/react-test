@@ -1,0 +1,14 @@
+/*
+* @Author: wrma
+* @Date:   2018-02-28 17:22:28
+* @Last Modified by:   wrma
+* @Last Modified time: 2018-02-28 17:32:16
+*/
+body{
+	background: #aaa;
+}
+
+#app .jsx{
+	color: white;
+	font-size: 30px;
+}
