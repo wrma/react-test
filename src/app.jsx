@@ -1,84 +1,129 @@
-
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route ,Link, Switch} from 'react-router-dom'
 
-class ComponentA extends React.Component{
+class Component extends React.Component{
+	//构造函数
 	constructor(){
 		super();
+		this.state = {
+			name : 'old state',
+		}
+		console.log('初始化数据 子 constructor');
 	}
+	//组件将要加载
+	componentWillMount(){
+		//可以将一些异步事件放在此处处理
+		console.log('子 componentWillMount');
+	}
+	//组件加载完成
+	componentDidMount(){
+		console.log('子 componentDidMount');
+	}
+	//处理点击事件
+	handleCilck(){
+		console.log('更新数据');
+		this.setState({
+			name : 'new state'
+		})
+	}
+	//将要接收父组件传回来的props
+	componentWillReceiveProps(){
+		console.log('子 componentWillReceiveProps');
+	}
+	//判断子组件是否应该更新,默认为true
+	shouldComponentUpdate(){
+		console.log('子 shouldComponentUpdate');
+		return true;
+	}
+	//组件将要更新
+	componentWillUpdate(){
+		console.log('子 componentWillUpdate');
+	}
+	//组件更新完成
+	componentDidUpdate(){
+		console.log('子 componentDidUpdate');
+	}
+	//组件即将销毁
+	componentWillUnmount(){
+		//这里通常用来取消一些操作，比如说定时器啥的
+		console.log('子 componentWillUnmount');
+	}
+	//加载
 	render(){
+		console.log('子 render');
 		return (
-			<div>	
-				ComponentA						
-				<Switch>
-					{/*exact为完全匹配*/}
-					<Route exact path={`${this.props.match.path}`} 
-							render={(route) => {
-								return <div>这是A组件</div>
-							}}>
-					</Route>
-					{/*如何分清到底是子路径还是参数？ 一般把通配的放到后面*/}
-					<Route path={`${this.props.match.path}/sub`} 
-							render={(route) => {
-								return <div>这是A组件sub</div>
-							}}>
-					</Route>
-					<Route path={`${this.props.match.path}/:id`} 
-							render={(route) => {
-								return <div>这是A组件,参数是:{route.match.params.id}</div>
-							}}>
-					</Route>
-				</Switch>
-			</div>		
-		);
-	}
-}
-
-class ComponentB extends React.Component{
-	constructor(){
-		super();
-	}
-	render(){
-		return (
+			// render也只能渲染一个顶级组件
 			<div>			
-				这是B组件
+				<div>state: {this.state.name}</div>
+				<div>props: {this.props.name}</div>
+				{/*改变state,来触发组件的更新*/}
+				<button onClick={() => {this.handleCilck()}}>更新组件</button>
 			</div>
 		);
 	}
 }
 
 class App extends React.Component{
+	//构造函数
 	constructor(){
 		super();
+		this.state = {
+			name : 'old props',
+			hasChild: 'true'
+		}
+		console.log('初始化数据 父 constructor');
+	}
+	//判断子组件是否应该更新,默认为true
+	shouldComponentUpdate(){
+		console.log('父 shouldComponentUpdate');
+		return true;
+	}
+	//组件将要更新
+	componentWillUpdate(){
+		console.log('父 componentWillUpdate');
+	}
+	//组件更新完成
+	componentDidUpdate(){
+		console.log('父 componentDidUpdate');
+	}
+	//组件将要加载
+	componentWillMount(){
+		//可以将一些异步事件放在此处处理
+		console.log('父 componentWillMount');
+	}
+	//组件加载完成
+	componentDidMount(){
+		console.log('父 componentDidMount');
+	}
+	handleCilck(){
+		console.log('更新props');
+		this.setState({
+			name : 'new props'
+		});
+	}
+	deleteChild(){
+		console.log('干掉子组件');
+		this.setState({
+			hasChild : false
+		})
 	}
 	render(){
+		console.log('父 render');
 		return(
 			<div>
-				<Link to='/a'>A组件</Link>
-				<br/>
-			{/*如何分清到底是子路径还是参数？*/}
-				<Link to='/a/123'>带参数的A组件</Link>
-				<br/>
-				<Link to='/a/sub'>/a/sub</Link>
-				<br/>
-				<Link to='/b'>B组件</Link>
-				{this.props.children}
+				{
+					this.state.hasChild ? <Component name={this.state.name}/> : null
+				}
+				<button onClick={() => {this.handleCilck()}}>改变props</button>
+				<button onClick={() => {this.deleteChild()}}>干掉子组件</button>
 			</div>
 		)
 	}
 }
 
 ReactDOM.render(
-	<Router>
-		<App>
-			<Route path='/a' component={ComponentA}></Route>
-		{/*如此一来，A组件中的this.props.match.path='/a/123',而他所带参数为空
-			<Route path='/a/:id' component={ComponentA}></Route>
-		*/}
-			<Route path='/b' component={ComponentB}></Route>			
-		</App>
-	</Router>,
+	<div>
+		<App/>
+	</div>,
 	document.querySelector('#app')
 );
