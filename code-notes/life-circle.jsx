@@ -13,16 +13,16 @@ class Component extends React.Component{
 		this.state = {
 			name : 'old state',
 		}
-		console.log('初始化数据 constructor');
+		console.log('初始化数据 子 constructor');
 	}
 	//组件将要加载
 	componentWillMount(){
 		//可以将一些异步事件放在此处处理
-		console.log('componentWillMount');
+		console.log('子 componentWillMount');
 	}
 	//组件加载完成
 	componentDidMount(){
-		console.log('componentDidMount');
+		console.log('子 componentDidMount');
 	}
 	//处理点击事件
 	handleCilck(){
@@ -33,29 +33,29 @@ class Component extends React.Component{
 	}
 	//将要接收父组件传回来的props
 	componentWillReceiveProps(){
-		console.log('componentWillReceiveProps');
+		console.log('子 componentWillReceiveProps');
 	}
 	//判断子组件是否应该更新,默认为true
 	shouldComponentUpdate(){
-		console.log('shouldComponentUpdate');
+		console.log('子 shouldComponentUpdate');
 		return true;
 	}
 	//组件将要更新
 	componentWillUpdate(){
-		console.log('componentWillUpdate');
+		console.log('子 componentWillUpdate');
 	}
 	//组件更新完成
 	componentDidUpdate(){
-		console.log('componentDidUpdate');
+		console.log('子 componentDidUpdate');
 	}
 	//组件即将销毁
 	componentWillUnmount(){
 		//这里通常用来取消一些操作，比如说定时器啥的
-		console.log('componentWillUnmount');
+		console.log('子 componentWillUnmount');
 	}
 	//加载
 	render(){
-		console.log('render');
+		console.log('子 render');
 		return (
 			// render也只能渲染一个顶级组件
 			<div>			
@@ -76,12 +76,35 @@ class App extends React.Component{
 			name : 'old props',
 			hasChild: 'true'
 		}
+		console.log('初始化数据 父 constructor');
+	}
+	//判断子组件是否应该更新,默认为true
+	shouldComponentUpdate(){
+		console.log('父 shouldComponentUpdate');
+		return true;
+	}
+	//组件将要更新
+	componentWillUpdate(){
+		console.log('父 componentWillUpdate');
+	}
+	//组件更新完成
+	componentDidUpdate(){
+		console.log('父 componentDidUpdate');
+	}
+	//组件将要加载
+	componentWillMount(){
+		//可以将一些异步事件放在此处处理
+		console.log('父 componentWillMount');
+	}
+	//组件加载完成
+	componentDidMount(){
+		console.log('父 componentDidMount');
 	}
 	handleCilck(){
 		console.log('更新props');
 		this.setState({
 			name : 'new props'
-		})
+		});
 	}
 	deleteChild(){
 		console.log('干掉子组件');
@@ -90,6 +113,7 @@ class App extends React.Component{
 		})
 	}
 	render(){
+		console.log('父 render');
 		return(
 			<div>
 				{
