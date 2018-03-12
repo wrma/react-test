@@ -110,3 +110,103 @@ ReactDOM.render(
 	</Router>,
 	document.querySelector('#app')
 );
+
+
+//Link处理参数跳转时，组件不会重新渲染而是更新，而其他跳转则是重新render
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { HashRouter as Router, Route ,Link} from 'react-router-dom'
+
+class Component extends React.Component{
+	//构造函数
+	constructor(){
+		super();
+		console.log('初始化数据 子 constructor');
+	}
+	//组件将要加载
+	componentWillMount(){
+		//可以将一些异步事件放在此处处理
+		console.log('子 componentWillMount');
+	}
+	//组件加载完成
+	componentDidMount(){
+		console.log('子 componentDidMount');
+	}
+	//将要接收父组件传回来的props
+	componentWillReceiveProps(nextProps){
+		console.log('子 componentWillReceiveProps');
+	}
+	//判断子组件是否应该更新,默认为true
+	shouldComponentUpdate(){
+		console.log('子 shouldComponentUpdate');
+		return true;
+	}
+	//组件将要更新
+	componentWillUpdate(){
+		console.log('子 componentWillUpdate');
+	}
+	//组件更新完成
+	componentDidUpdate(){
+		console.log('子 componentDidUpdate');
+	}
+	//加载
+	render(){
+		console.log('子 render');
+		return (
+			// render也只能渲染一个顶级组件
+			<div>
+				children
+			</div>
+		);
+	}
+}
+
+class App extends React.Component{
+	//构造函数
+	constructor(){
+		super();
+		this.state = {
+			name : 'old props',
+			hasChild: 'true'
+		}
+		console.log('初始化数据 父 constructor');
+	}
+	//组件将要更新
+	componentWillUpdate(){
+		console.log('更新数据 父 componentWillUpdate');
+	}
+	//组件更新完成
+	componentDidUpdate(){
+		console.log('父 componentDidUpdate');
+	}
+	//组件将要加载
+	componentWillMount(){
+		//可以将一些异步事件放在此处处理
+		console.log('父 componentWillMount');
+	}
+	//组件加载完成
+	componentDidMount(){
+		console.log('父 componentDidMount');
+	}
+	render(){
+		console.log('父 render');
+		return(
+			<div>
+				<Component></Component>
+				<Link to='/index'>跳转页面</Link>
+				<Link to='/index/123'>跳转页面(带参数)</Link>
+			</div>
+		)
+	}
+}
+
+ReactDOM.render(
+	<Router>
+		<div>
+			<Route path='/index/:id?' component={App}></Route>
+			{/*<Route exact path='/index' component={App}></Route>
+			<Route path='/index/:id' component={App}></Route>*/}
+		</div>
+	</Router>,
+	document.querySelector('#app')
+);

@@ -27,8 +27,14 @@ class Component extends React.Component{
 		})
 	}
 	//将要接收父组件传回来的props
-	componentWillReceiveProps(){
+	componentWillReceiveProps(nextProps){
+		//注意这里无论父组件传回来的props有没有更新，只要父组件state改变就会触发这个事件
 		console.log('子 componentWillReceiveProps');
+		console.log('this.props:'+this.props.name);
+		console.log('nextProps:'+nextProps.name);
+		this.setState({
+			name : 'propsSet'
+		})
 	}
 	//判断子组件是否应该更新,默认为true
 	shouldComponentUpdate(){
@@ -98,7 +104,8 @@ class App extends React.Component{
 	handleCilck(){
 		console.log('更新props');
 		this.setState({
-			name : 'new props'
+			name : 'new props',
+			wrma : 'wrma'
 		});
 	}
 	deleteChild(){
